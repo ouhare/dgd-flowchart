@@ -173,9 +173,9 @@ const triggerOnClick = (ev) => {
   } while (target.classList && !target.classList.contains('clickable'))
   if (!target || !target.getAttribute) return
 
-  const splits = target.getAttribute('id').split('-')
-  if (splits.length === 3) {
-    const node = recursiveFind(props.modelValue, splits[1])
+  const nodeId = target.getAttribute('id').split('-').slice(1, -1).join('-')
+  if (nodeId) {
+    const node = recursiveFind(props.modelValue, nodeId)
     if (node) {
       if (node.onClick) return node.onClick(node, ev)
       if (props.onClick) return props.onClick(node, ev)
