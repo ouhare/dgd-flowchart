@@ -63,6 +63,7 @@ const props = defineProps({
   }
 })
 
+let currentTransform = null
 const root = ref(null)
 
 mermaid.initialize({
@@ -130,10 +131,14 @@ const initZoom = (id) => {
   const svg = select('#' + id)
   svg.html('<g>' + svg.html() + '</g>')
   const inner = svg.select('g')
+  if (currentTransform) inner.attr('transform', currentTransform)
+
   const zoomCallback = zoom().on('zoom', (event) => {
     inner.attr('transform', event.transform)
+    currentTransform = event.transform
     if (props.onZoom) props.onZoom(event)
   })
+
   svg.call(zoomCallback).on('dblclick.zoom', null)
 }
 
@@ -195,9 +200,9 @@ const triggerMouseMove = (ev) => {
     return
   }
 
-  const splits = target.getAttribute('id').split('-')
-  if (splits.length === 3) {
-    const node = recursiveFind(props.modelValue, splits[1])
+  const nodeId = target.getAttribute('id').split('-').slice(1, -1).join('-')
+  if (nodeId) {
+    const node = recursiveFind(props.modelValue, nodeId)
     if (node) {
       if (node.onHover) return node.onHover(node, ev)
       if (props['onHover:node']) return props['onHover:node'](node, ev)
