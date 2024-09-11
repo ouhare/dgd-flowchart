@@ -1,6 +1,6 @@
 {
   "name": "@dgdv/vue-flowchart",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "Render tree using mermaid flowchart",
   "author": "ouhare <ouhare@gmail.com>",
   "keywords": [
